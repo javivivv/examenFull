@@ -1,0 +1,197 @@
+{
+  "info": {
+    "name": "GameGo - Gateway local (8080)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "gateway_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "cliente_id",
+      "value": "1"
+    },
+    {
+      "key": "pedido_id",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Listar productos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{gateway_url}}/api/productos/"
+      }
+    },
+    {
+      "name": "02 Registrar cliente",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{gateway_url}}/api/clientes/registro",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Ana Torres\",\n  \"email\": \"ana.torres@gmail.com\",\n  \"password\": \"clave1234\"\n}"
+        }
+      }
+    },
+    {
+      "name": "03 Iniciar sesión (cuenta demo)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{gateway_url}}/api/clientes/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"demo@gmail.com\",\n  \"password\": \"Demo1234\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const c = pm.response.json();",
+              "pm.collectionVariables.set('cliente_id', c.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Enviar mensaje de contacto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{gateway_url}}/api/clientes/contacto",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Ana\",\n  \"email\": \"ana@gmail.com\",\n  \"comentario\": \"Hola, ¿tienen más juegos de PS2?\"\n}"
+        }
+      }
+    },
+    {
+      "name": "05 Crear pedido (2 juegos)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{gateway_url}}/api/pedidos/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"clienteId\": \"{{cliente_id}}\",\n  \"items\": [\n    {\n      \"productoId\": 1,\n      \"cantidad\": 2\n    },\n    {\n      \"productoId\": 5,\n      \"cantidad\": 1\n    }\n  ]\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const p = pm.response.json();",
+              "pm.collectionVariables.set('pedido_id', p.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Pagar pedido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{gateway_url}}/api/pagos/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pedidoId\": \"{{pedido_id}}\",\n  \"metodo\": \"TARJETA_CREDITO\"\n}"
+        }
+      }
+    },
+    {
+      "name": "07 Programar despacho",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{gateway_url}}/api/despachos/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pedidoId\": \"{{pedido_id}}\",\n  \"direccion\": \"Av. Providencia 1234\",\n  \"comuna\": \"Providencia\"\n}"
+        }
+      }
+    },
+    {
+      "name": "08 Ver pedido (estado PAGADO)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{gateway_url}}/api/pedidos/{{pedido_id}}"
+      }
+    },
+    {
+      "name": "09 Listar pagos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{gateway_url}}/api/pagos/"
+      }
+    },
+    {
+      "name": "10 Listar despachos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{gateway_url}}/api/despachos/"
+      }
+    },
+    {
+      "name": "11 Stock insuficiente (debe dar 409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{gateway_url}}/api/pedidos/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"clienteId\": \"{{cliente_id}}\",\n  \"items\": [\n    {\n      \"productoId\": 1,\n      \"cantidad\": 9999\n    }\n  ]\n}"
+        }
+      }
+    }
+  ]
+}

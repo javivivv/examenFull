@@ -1,0 +1,108 @@
+# Render Blueprint de GameGo (plan Free): 6 Web Services de backend + 1 sitio estático (frontend).
+# Reemplazar TU-PREFIJO por un identificador corto y único (minúsculas, sin espacios).
+# Eureka se conserva para Docker local, pero se desactiva en Render Free.
+services:
+  - type: web
+    name: TU-PREFIJO-gamego-cliente
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/render/docker/cliente-service.Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: EUREKA_ENABLED
+        value: false
+
+  - type: web
+    name: TU-PREFIJO-gamego-producto
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/render/docker/producto-service.Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: EUREKA_ENABLED
+        value: false
+
+  - type: web
+    name: TU-PREFIJO-gamego-pedido
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/render/docker/pedido-service.Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: EUREKA_ENABLED
+        value: false
+      - key: APP_DISCOVERY_ENABLED
+        value: false
+      - key: CLIENTE_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-cliente.onrender.com
+      - key: PRODUCTO_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-producto.onrender.com
+
+  - type: web
+    name: TU-PREFIJO-gamego-pago
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/render/docker/pago-service.Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: EUREKA_ENABLED
+        value: false
+      - key: APP_DISCOVERY_ENABLED
+        value: false
+      - key: PEDIDO_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-pedido.onrender.com
+
+  - type: web
+    name: TU-PREFIJO-gamego-despacho
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/render/docker/despacho-service.Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: EUREKA_ENABLED
+        value: false
+      - key: APP_DISCOVERY_ENABLED
+        value: false
+      - key: PEDIDO_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-pedido.onrender.com
+
+  - type: web
+    name: TU-PREFIJO-gamego-gateway
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/render/docker/api-gateway.Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: EUREKA_ENABLED
+        value: false
+      - key: CLIENTE_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-cliente.onrender.com
+      - key: PRODUCTO_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-producto.onrender.com
+      - key: PEDIDO_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-pedido.onrender.com
+      - key: PAGO_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-pago.onrender.com
+      - key: DESPACHO_SERVICE_URL
+        value: https://TU-PREFIJO-gamego-despacho.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://TU-PREFIJO-gamego-web.onrender.com
+
+  # Frontend (React + Vite) publicado como sitio estático.
+  # VITE_API_URL se lee al compilar y apunta al gateway.
+  - type: web
+    name: TU-PREFIJO-gamego-web
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: VITE_API_URL
+        value: https://TU-PREFIJO-gamego-gateway.onrender.com

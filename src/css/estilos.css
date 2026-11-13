@@ -1,0 +1,117 @@
+:root,
+[data-bs-theme="dark"] {
+    --gg-rojo: #c0392b;
+    --gg-rojo-oscuro: #8b1e1e;
+    --gg-rojo-hover: #a52a2a;
+    --gg-superficie: #1a1d29;
+    --gg-borde: #3d3737;
+
+    --bs-body-bg: #12141c;
+    --bs-body-color: #b5b8c4;
+    --bs-border-color: var(--gg-borde);
+    --bs-link-color-rgb: 255, 255, 255;
+    --bs-link-hover-color-rgb: 230, 150, 140;
+    --bs-danger: #ff6b6b;
+    --bs-danger-rgb: 255, 107, 107;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.cabecera {
+    background-color: var(--gg-rojo);
+    color: #fff;
+    padding: 25px 0;
+}
+
+.menu {
+    background-color: var(--gg-rojo-oscuro);
+}
+
+.menu .nav-link {
+    color: #fcfcfc;
+}
+
+.menu .nav-link:hover,
+.menu .nav-link:focus {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.tituloSeccion {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.card {
+    --bs-card-bg: var(--gg-superficie);
+    --bs-card-border-color: var(--gg-borde);
+}
+
+.producto-img {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.linkTrailer {
+    color: #fff;
+}
+
+.precio {
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: bold;
+}
+
+.btn-gamego {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--gg-rojo-oscuro);
+    --bs-btn-border-color: var(--gg-rojo-oscuro);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--gg-rojo-hover);
+    --bs-btn-hover-border-color: var(--gg-rojo-hover);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--gg-rojo-hover);
+    --bs-btn-active-border-color: var(--gg-rojo-hover);
+    --bs-btn-focus-shadow-rgb: 192, 57, 43;
+}
+
+.form-control {
+    background-color: var(--bs-body-bg);
+    border-color: var(--gg-borde);
+    color: #fff;
+}
+
+.form-control:focus {
+    background-color: var(--bs-body-bg);
+    color: #fff;
+    border-color: var(--gg-rojo);
+    box-shadow: 0 0 0 0.25rem rgba(192, 57, 43, 0.25);
+}
+
+.form-label {
+    font-weight: bold;
+    color: #fff;
+}
+
+.footer {
+    background-color: #1e2130;
+    color: #fff;
+}
+
+.offcanvas {
+    --bs-offcanvas-bg: var(--gg-superficie);
+    --bs-offcanvas-border-color: var(--gg-borde);
+}
+
+
+.carrito-img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
