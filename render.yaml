@@ -1,9 +1,9 @@
 ﻿# Render Blueprint de GameGo (plan Free): 6 Web Services de backend + 1 sitio estÃ¡tico (frontend).
-# Reemplazar javiera01 por un identificador corto y Ãºnico (minÃºsculas, sin espacios).
+# Reemplazar gamego por un identificador corto y Ãºnico (minÃºsculas, sin espacios).
 # Eureka se conserva para Docker local, pero se desactiva en Render Free.
 services:
   - type: web
-    name: javiera01-gamego-cliente
+    name: gamego-gamego-cliente
     runtime: docker
     plan: free
     dockerfilePath: ./backend/render/docker/cliente-service.Dockerfile
@@ -14,7 +14,7 @@ services:
         value: false
 
   - type: web
-    name: javiera01-gamego-producto
+    name: gamego-gamego-producto
     runtime: docker
     plan: free
     dockerfilePath: ./backend/render/docker/producto-service.Dockerfile
@@ -25,7 +25,7 @@ services:
         value: false
 
   - type: web
-    name: javiera01-gamego-pedido
+    name: gamego-gamego-pedido
     runtime: docker
     plan: free
     dockerfilePath: ./backend/render/docker/pedido-service.Dockerfile
@@ -37,12 +37,12 @@ services:
       - key: APP_DISCOVERY_ENABLED
         value: false
       - key: CLIENTE_SERVICE_URL
-        value: https://javiera01-gamego-cliente.onrender.com
+        value: https://gamego-gamego-cliente.onrender.com
       - key: PRODUCTO_SERVICE_URL
-        value: https://javiera01-gamego-producto.onrender.com
+        value: https://gamego-gamego-producto.onrender.com
 
   - type: web
-    name: javiera01-gamego-pago
+    name: gamego-gamego-pago
     runtime: docker
     plan: free
     dockerfilePath: ./backend/render/docker/pago-service.Dockerfile
@@ -54,10 +54,10 @@ services:
       - key: APP_DISCOVERY_ENABLED
         value: false
       - key: PEDIDO_SERVICE_URL
-        value: https://javiera01-gamego-pedido.onrender.com
+        value: https://gamego-gamego-pedido.onrender.com
 
   - type: web
-    name: javiera01-gamego-despacho
+    name: gamego-gamego-despacho
     runtime: docker
     plan: free
     dockerfilePath: ./backend/render/docker/despacho-service.Dockerfile
@@ -69,10 +69,10 @@ services:
       - key: APP_DISCOVERY_ENABLED
         value: false
       - key: PEDIDO_SERVICE_URL
-        value: https://javiera01-gamego-pedido.onrender.com
+        value: https://gamego-gamego-pedido.onrender.com
 
   - type: web
-    name: javiera01-gamego-gateway
+    name: gamego-gamego-gateway
     runtime: docker
     plan: free
     dockerfilePath: ./backend/render/docker/api-gateway.Dockerfile
@@ -82,22 +82,22 @@ services:
       - key: EUREKA_ENABLED
         value: false
       - key: CLIENTE_SERVICE_URL
-        value: https://javiera01-gamego-cliente.onrender.com
+        value: https://gamego-gamego-cliente.onrender.com
       - key: PRODUCTO_SERVICE_URL
-        value: https://javiera01-gamego-producto.onrender.com
+        value: https://gamego-gamego-producto.onrender.com
       - key: PEDIDO_SERVICE_URL
-        value: https://javiera01-gamego-pedido.onrender.com
+        value: https://gamego-gamego-pedido.onrender.com
       - key: PAGO_SERVICE_URL
-        value: https://javiera01-gamego-pago.onrender.com
+        value: https://gamego-gamego-pago.onrender.com
       - key: DESPACHO_SERVICE_URL
-        value: https://javiera01-gamego-despacho.onrender.com
+        value: https://gamego-gamego-despacho.onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://javiera01-gamego-web.onrender.com
+        value: https://gamego-gamego-web.onrender.com
 
   # Frontend (React + Vite) publicado como sitio estÃ¡tico.
   # VITE_API_URL se lee al compilar y apunta al gateway.
   - type: web
-    name: javiera01-gamego-web
+    name: gamego-gamego-web
     runtime: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
@@ -105,5 +105,5 @@ services:
       - key: NODE_VERSION
         value: 22.12.0
       - key: VITE_API_URL
-        value: https://javiera01-gamego-gateway.onrender.com
+        value: https://gamego-gamego-gateway.onrender.com
 
